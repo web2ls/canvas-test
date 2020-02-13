@@ -15,7 +15,8 @@ canvas.addEventListener('mousedown', (event) => {
     console.log(event);
     isDrawing = true;
     ctx.beginPath();
-    ctx.moveTo(event.pageX, event.pageY);
+    ctx.moveTo(event.offsetX, event.offsetY);
+    console.log(event.offsetX, event.offsetY);
     contour.push([event.pageX, event.pageY]);
 })
 
@@ -24,8 +25,8 @@ canvas.addEventListener('mousemove', (event) => {
 
     console.log('drawing');
 
-    ctx.moveTo(event.pageX, event.pageY);
-    ctx.lineTo(event.pageX, event.pageY);
+    // ctx.moveTo(event.pageX, event.pageY);
+    ctx.lineTo(event.offsetX, event.offsetY);
     ctx.stroke();
     contour.push([event.pageX, event.pageY]);
 })
