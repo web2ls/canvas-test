@@ -1,6 +1,10 @@
+console.log(turf);
+
 console.log('Renderer');
 
 const canvas = document.getElementById('canvas');
+const buttonCheckElem = document.querySelector('.check-btn');
+const buttonClearElem = document.querySelector('.clear-canvas-btn');
 const ctx = canvas.getContext('2d');
 let isDrawing = false;
 let contour = [];
@@ -40,4 +44,20 @@ canvas.addEventListener('mouseup', (event) => {
         localStorage.setItem('contour2', JSON.stringify(contour));
 
     contour = [];
+})
+
+buttonCheckElem.addEventListener('click', () => {
+    console.log('click on the button');
+    const rawPoly1 = JSON.parse(localStorage.getItem('contour1'));
+    const rawPoly2 = JSON.parse(localStorage.getItem('contour2'));
+    const poly1 = turf.polygon([rawPoly1]);
+    const poly2 = turf.polygon([rawPoly2]);
+    const intersection = turf.intersect(poly1, poly2);
+    console.log(intersection);
+})
+
+buttonClearElem.addEventListener('click', () => {
+    console.log('clear canvas');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    localStorage.clear();
 })
