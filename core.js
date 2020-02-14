@@ -5,19 +5,13 @@ const ctx = canvas.getContext('2d');
 let isDrawing = false;
 let contour = [];
 
-// ctx.beginPath();
-// ctx.moveTo(100, 100);
-// ctx.lineTo(300, 300);
-// ctx.stroke();
-
 canvas.addEventListener('mousedown', (event) => {
     console.log('Start draw');
-    console.log(event);
     isDrawing = true;
     ctx.beginPath();
     ctx.moveTo(event.offsetX, event.offsetY);
-    console.log(event.offsetX, event.offsetY);
-    contour.push([event.pageX, event.pageY]);
+    
+    contour.push([event.offsetX, event.offsetY]);
 })
 
 canvas.addEventListener('mousemove', (event) => {
@@ -25,16 +19,25 @@ canvas.addEventListener('mousemove', (event) => {
 
     console.log('drawing');
 
-    // ctx.moveTo(event.pageX, event.pageY);
     ctx.lineTo(event.offsetX, event.offsetY);
     ctx.stroke();
-    contour.push([event.pageX, event.pageY]);
+    contour.push([event.offsetX, event.offsetY]);
 })
 
 canvas.addEventListener('mouseup', (event) => {
     console.log('Stop draw');
+    contour.push([event.offsetX, event.offsetY]);
+    ctx.lineTo(event.offsetX, event.offsetY);
+
+    ctx.lineTo(contour[0][0], contour[0][1]);
+    contour.push(contour[0]);
+    ctx.stroke();
     isDrawing = false;
-    contour.push([event.pageX, event.pageY]);
-    console.log(contour);
+
+    if (!localStorage.getItem('contour1'))
+        localStorage.setItem('contour1', JSON.stringify(contour));
+    else if (!localStorage.getItem('contour2'))
+        localStorage.setItem('contour2', JSON.stringify(contour));
+
     contour = [];
 })
